@@ -1,5 +1,6 @@
 import sys
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType
+from os import path
 
 __version__ = '0.1.0'
 
@@ -25,8 +26,34 @@ def main():
     parser.add_argument('filename', help='Path to the file to compile.', default=None, nargs='?')
     
     args = parser.parse_args()
-    print(args)
-    # Do something with args (WIP)
+    
+    # Validate arguments
+    if not any((args.filename, args.watch)):
+        print('Error: No arguments provided. Use "expand --help" for help.')
+        exit(1)
+    
+    if args.filename:
+        # Check that the file provided is valid
+        file_extension = path.splitext(args.filename)[1]
+        if file_extension != '.mcfunction':
+            print(f'Error: Can only compile files with extension \'.mcfunction\'.\nProvided file has extension \'{file_extension}\'.')
+            exit(1)
+
+        do_exit = False
+        try:
+            f = open(args.filename, 'r')
+            f.close()
+            del f
+
+        except FileNotFoundError:
+            print(f'Error: File \'{args.filename}\' does not exist.')
+            exit(1)
+
+        except IOError:
+            print(f'Error: File \'{args.filename}\' is not accessible.')
+            exit(1)
+    
+    # The input is validated, do something with it (WIP)
 
 if __name__ == '__main__':
     main()

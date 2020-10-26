@@ -2,6 +2,9 @@ import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter, FileType
 from os import path
 
+from complier import compile_function
+from watch import watch
+
 __version__ = '0.1.0'
 
 def main():
@@ -29,7 +32,7 @@ def main():
     
     # Validate arguments
     if not any((args.filename, args.watch)):
-        print('Error: No arguments provided. Use "expand --help" for help.')
+        print('Error: No arguments provided. Type "expand --help" for help.')
         exit(1)
     
     if args.filename:
@@ -53,7 +56,13 @@ def main():
             print(f'Error: File \'{args.filename}\' is not accessible.')
             exit(1)
     
-    # The input is validated, do something with it (WIP)
+        # The input is validated, do something with it
+        print(f'Compiling {args.filename}...')
+        compile_function(args.filename)
+
+    # Watching for file changes
+    if args.watch:
+        watch()
 
 if __name__ == '__main__':
     main()

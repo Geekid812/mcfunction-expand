@@ -7,6 +7,10 @@ import string
 RE_EVAL_MATCH = compile(r'\*\([^*\n]+\)\*')
 RE_ASSIGNMENT = compile(r'^(?P<var_name>\w+)( )?=( )?(?P<var_value>.+)$')
 
+EVAL_SANITIZE = (
+    '__import__',
+    'eval',
+)
 
 def compile_function(path):
     with open(path, 'r') as f:
@@ -32,8 +36,9 @@ def compile_function(path):
         line_number = contents[:current_pos].count('\n')
 
         # Sanitizing the eval input
-        eval_content = eval_content.replace('__import__','')
-        eval_content = eval_content.replace('eval','')
+        for forbidden_string in EVAL_SANITIZE:
+            while forbidden_string in eval_content:
+                eval_content = eval_content.replace(forbidden_string,'')
 
         # Variable assignment
         if assignment := RE_ASSIGNMENT.match(eval_content):

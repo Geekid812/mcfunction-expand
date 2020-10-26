@@ -1,6 +1,9 @@
 from re import search, compile
 from collections.abc import Iterable
 
+import math
+import string
+
 RE_EVAL_MATCH = compile(r'\*\([^*\n]+\)\*')
 RE_ASSIGNMENT = compile(r'^(?P<var_name>\w+)( )?=( )?(?P<var_value>.+)$')
 
@@ -20,7 +23,7 @@ def compile_function(path):
     iterables = {}
 
     current_pos = 0
-    variables = {}
+    variables = {'math': math, 'string': string}
     while match := RE_EVAL_MATCH.search(contents, current_pos):
         evaluated += contents[current_pos : match.start()]
 
@@ -29,8 +32,8 @@ def compile_function(path):
         line_number = contents[:current_pos].count('\n')
 
         # Sanitizing the eval input
-        eval_content = eval_content.strip('__import__')
-        eval_content = eval_content.strip('eval')
+        eval_content = eval_content.replace('__import__','')
+        eval_content = eval_content.replace('eval','')
 
         # Variable assignment
         if assignment := RE_ASSIGNMENT.match(eval_content):
@@ -88,6 +91,3 @@ def compile_function(path):
     # Write the output to the file
     with open(path, 'w') as f:
         f.write(out)
-
-
-compile_function('test.mcfunction')

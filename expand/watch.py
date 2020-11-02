@@ -5,7 +5,7 @@ from time import sleep
 
 from complier import compile_function
 
-def watch(directory=os.getcwd()):
+def watch(directory=os.getcwd(), silent=False):
 
     # Since watchdog sometimes fires events multiple times, we'll only complie each path once per cycle
     compiled_this_cycle = {0}
@@ -24,7 +24,7 @@ def watch(directory=os.getcwd()):
         # Check if this file has been compiled this cycle
         if path in compiled_this_cycle: return
 
-        print(f'File \'{os.path.basename(path)}\' was modified, compiling if necessary...')
+        if not silent: print(f'File \'{os.path.basename(path)}\' was modified, compiling if necessary...')
         compiled_this_cycle.add(path)
 
         # Wait for the text editors to finish writing to the file

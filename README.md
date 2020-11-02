@@ -52,3 +52,5 @@ execute as @a[team=blue] run say I am in team blue!
 execute as @a[team=green] run say I am in team green!
 execute as @a[team=yellow] run say I am in team yellow!
 ```
+
+See the `examples` directory for more examples on how to use the compiler!

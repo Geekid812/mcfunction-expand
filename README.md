@@ -11,7 +11,7 @@ mcfunction-expand is a CLI tool that compiles `.mcfunction` files. It can evalua
 ## Installation
 Python version **3.8** or higher is required.
 ```
-# Clone the repisory into your working directory
+# Clone the repository into your working directory
 git clone https://github.com/geekid812/mcfunction-expand
 
 # Install dependencies

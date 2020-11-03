@@ -43,7 +43,6 @@ def main():
             print(f'Error: Can only compile files with extension \'.mcfunction\'.\nProvided file has extension \'{file_extension}\'.')
             exit(1)
 
-        do_exit = False
         try:
             f = open(args.filename, 'r')
             f.close()
